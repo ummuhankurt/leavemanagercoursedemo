@@ -5,8 +5,9 @@
 ## Secrets
 - Secrets never enter the repo, specs, prompts, or chat. `.env` is gitignored; provide `.env.example`.
 - Agents never print secret values, even when debugging.
-- Oturum imza anahtarı `.env`'den okunur. Demo kullanıcı şifreleri yalnızca yerel seed betiğinde
-  üretilir, repoya yazılmaz.
+- Oturum imza anahtarı ortam değişkeninden (`LEAVE_MANAGER_SESSION_SECRET`) okunur; `.env` dosyası
+  yüklenmez. Demo kullanıcı şifresi yalnızca yerel seed adımında ortamdan
+  (`LEAVE_MANAGER_DEMO_PASSWORD`) okunur, yazdırılmaz ve repoya yazılmaz.
 
 ## Input & output
 - Tüm girdiler sınırda (`api/`) Pydantic şemalarıyla doğrulanır; bilinmeyen alanlar reddedilir
