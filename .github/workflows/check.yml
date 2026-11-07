@@ -19,8 +19,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      # The bootstrap workflow may add toolchain setup steps here (e.g. setup-java, setup-node)
-      # to match the commands it writes into scripts/check.conf.
+      # Toolchain for scripts/check.conf: uv + the Python pinned in .python-version (spec 0001, G-6).
+      - uses: astral-sh/setup-uv@v6
+      - name: Python (from .python-version)
+        run: uv python install
       # --fast is for the inner loop only; CI always runs the full contract (docs/testing.md).
       - name: Verification contract
         run: |

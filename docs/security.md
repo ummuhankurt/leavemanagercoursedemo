@@ -24,7 +24,9 @@
   tutmaz (`localStorage` yok).
 - **CSRF:** durum değiştiren isteklerde (POST/PUT/PATCH/DELETE) double-submit token,
   `X-CSRF-Token` header'ı.
-- **Default deny:** `/api/v1/auth/login` ve statik dosyalar dışındaki her uç kimlik doğrulama ister.
+- **Default deny:** `/api/v1/auth/login`, sistem durumu sorgusu (`/api/v1/health` — yalnızca
+  çalışma durumu, sürüm ve veritabanı erişimi; gizli bilgi yok, spec 0001) ve statik dosyalar
+  dışındaki her uç kimlik doğrulama ister.
 - **AuthZ (hassas alan, BR-6):** yetki kararı **yalnızca `services/`** katmanında verilir
   (ör. `can_decide(actor, request)`); `api/` yalnızca oturumdaki kullanıcıyı servise iletir.
   Frontend'deki gizleme/gösterme güvenlik değildir.
