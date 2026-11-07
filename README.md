@@ -5,7 +5,8 @@
 1. Önkoşul: [uv](https://docs.astral.sh/uv/) — Windows: `winget install --id=astral-sh.uv -e --source winget`
 2. Python ve bağımlılıklar: `uv python install` (sürüm `.python-version`'dan) ve `uv sync`
 3. Uygulamayı başlatın: `uv run uvicorn leave_manager.main:create_app --factory`
-   → tarayıcıda <http://127.0.0.1:8000/> (veritabanı: `.env.example`'daki `LEAVE_MANAGER_DATABASE_URL`)
+   → tarayıcıda <http://127.0.0.1:8000/>. Veritabanı, ortam değişkeni `LEAVE_MANAGER_DATABASE_URL`
+   ile seçilir (varsayılan `sqlite:///./leave_manager.db`; `.env` dosyası okunmaz — bkz. `.env.example`)
 4. Doğrulama: `./scripts/check --fast` (hızlı) · `./scripts/check` (tam; ağ gerektirir)
 
 ---
