@@ -23,7 +23,8 @@ Kod: `src/leave_manager/`. Testler: `tests/`.
 | `models/` (Domain / Model) | SQLAlchemy ORM varlıkları (User, Team, LeaveType, Entitlement, LeaveRequest, LeaveBalance), `LeaveRequestStatus` enum | Veri şeması |
 | `core/` (Altyapı) | Ayarlar, DB oturumu, `Clock` soyutlaması, alan hata tipleri (`core/errors.py`) | — |
 | `static/` (Frontend) | HTML/CSS/JS arayüz (ES modules); yalnızca HTTP API'yi çağırır | — |
-| `migrations/` | Alembic migration'ları — tek şema değişikliği yolu | Şema geçmişi |
+| `migrations/` | Alembic migration'ları (`src/leave_manager/migrations/`) — tek şema değişikliği yolu | Şema geçmişi |
+| `seed.py` | Yerel demo verisi: migrate + her rolden bir demo kullanıcı (`python -m leave_manager.seed`); `main.py` gibi katmanların dışında, servisleri çağırır | — |
 
 ## Communication rules
 

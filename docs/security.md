@@ -22,8 +22,11 @@
 - **AuthN:** e-posta + şifre; şifreler **argon2** (`argon2-cffi`) ile hash'lenir. Oturum
   **HttpOnly + SameSite=Lax + Secure** (üretimde) cookie'de imzalı token; frontend token'ı JS'te
   tutmaz (`localStorage` yok).
-- **CSRF:** durum değiştiren isteklerde (POST/PUT/PATCH/DELETE) double-submit token,
-  `X-CSRF-Token` header'ı.
+- **CSRF:** oturum gerektiren durum değiştiren isteklerde (POST/PUT/PATCH/DELETE) **oturuma
+  bağlı token**, `X-CSRF-Token` header'ı. Token imzalı oturumun içindedir; istemci onu giriş ve
+  `/api/v1/auth/me` yanıtının gövdesinden alır, sunucu header'ı oturumdakiyle sabit zamanlı
+  karşılaştırır (`services/auth.py`). Giriş isteği token istemez: henüz oturum yoktur ve cookie
+  SameSite=Lax'tır (spec 0002, plan R-2).
 - **Default deny:** `/api/v1/auth/login`, sistem durumu sorgusu (`/api/v1/health` — yalnızca
   çalışma durumu, sürüm ve veritabanı erişimi; gizli bilgi yok, spec 0001) ve statik dosyalar
   dışındaki her uç kimlik doğrulama ister.
