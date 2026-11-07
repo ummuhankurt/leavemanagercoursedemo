@@ -4,10 +4,16 @@
 
 1. Önkoşul: [uv](https://docs.astral.sh/uv/) — Windows: `winget install --id=astral-sh.uv -e --source winget`
 2. Python ve bağımlılıklar: `uv python install` (sürüm `.python-version`'dan) ve `uv sync`
-3. Uygulamayı başlatın: `uv run uvicorn leave_manager.main:create_app --factory`
-   → tarayıcıda <http://127.0.0.1:8000/>. Veritabanı, ortam değişkeni `LEAVE_MANAGER_DATABASE_URL`
-   ile seçilir (varsayılan `sqlite:///./leave_manager.db`; `.env` dosyası okunmaz — bkz. `.env.example`)
-4. Doğrulama: `./scripts/check --fast` (hızlı) · `./scripts/check` (tam; ağ gerektirir)
+3. Ortam değişkenleri (`.env` dosyası okunmaz — bkz. `.env.example`):
+   `LEAVE_MANAGER_SESSION_SECRET` **zorunlu** (yoksa uygulama başlamaz); veritabanı
+   `LEAVE_MANAGER_DATABASE_URL` ile seçilir (varsayılan `sqlite:///./leave_manager.db`)
+4. Veritabanı ve demo kullanıcılar: `LEAVE_MANAGER_DEMO_PASSWORD=<şifre> uv run python -m leave_manager.seed`
+   — şemayı günceller (Alembic) ve her rolden bir kullanıcı oluşturur (`calisan@example.com`,
+   `yonetici@example.com`, `ik@example.com`); tekrar çalıştırmak kullanıcıları çoğaltmaz.
+   Yalnızca şema: `uv run alembic upgrade head`
+5. Uygulamayı başlatın: `uv run uvicorn leave_manager.main:create_app --factory`
+   → tarayıcıda <http://127.0.0.1:8000/>
+6. Doğrulama: `./scripts/check --fast` (hızlı) · `./scripts/check` (tam; ağ gerektirir)
 
 ---
 
