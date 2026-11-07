@@ -68,6 +68,10 @@
   ConfigDict(from_attributes=True)`, `.model_dump()` — from bootstrap.
 - FastAPI/Starlette'in varsayılan `{"detail": ...}` hata gövdesi (404, 405, 422) — `HTTPException`
   ve `RequestValidationError` için de tek handler'a bağla (`error_body`) — from 0001 review L-1.
+- Starlette'in `Exception` handler'ı 500 yanıtını `ServerErrorMiddleware`'de, yani her
+  `@app.middleware("http")` / `add_middleware` dışında üretir; middleware'in eklediği header'lar 500'de
+  yoktur — her yanıtta olması gereken header'ı (güvenlik header'ları) o handler'ın yanıtına da ekle
+  — from 0002 review M-1.
 
 ## Enforced by tooling
 <!-- Wire new rules into `scripts/check` whenever possible — prose is advice, tooling is law. -->
