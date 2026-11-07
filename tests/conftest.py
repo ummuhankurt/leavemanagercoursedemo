@@ -12,6 +12,16 @@ from leave_manager.core.config import Settings
 from leave_manager.main import create_app
 
 INTEGRATION_DIR = Path(__file__).parent / "integration"
+# Test-only signing key: tests never depend on a real secret (spec 0002, Constraints).
+TEST_SESSION_SECRET = "test-session-secret-not-for-production"
+
+
+def make_settings(database_url: str, *, cookie_secure: bool = False) -> Settings:
+    return Settings(
+        database_url=database_url,
+        session_secret=TEST_SESSION_SECRET,
+        cookie_secure=cookie_secure,
+    )
 
 
 def pytest_collection_modifyitems(items: list[pytest.Item]) -> None:
@@ -23,7 +33,7 @@ def pytest_collection_modifyitems(items: list[pytest.Item]) -> None:
 
 def _client_for(database_url: str) -> Iterator[TestClient]:
     # Context manager: runs the app lifespan, so the engine is disposed at the end of the test.
-    with TestClient(create_app(Settings(database_url=database_url))) as client:
+    with TestClient(create_app(make_settings(database_url))) as client:
         yield client
 
 
