@@ -9,6 +9,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
+from leave_manager.api.security_headers import SECURITY_HEADERS
 from leave_manager.core.errors import DomainError
 
 logger = logging.getLogger(__name__)
@@ -56,8 +57,12 @@ async def handle_validation_error(_request: Request, exc: Exception) -> JSONResp
 async def handle_unexpected_error(_request: Request, exc: Exception) -> JSONResponse:
     # Details go to the log only — never to the user.
     logger.exception("unhandled error", exc_info=exc)
+    # Starlette runs this handler in ServerErrorMiddleware, outside every app middleware, so the
+    # security headers are added here as well (spec 0002, R-13; review round 1 M-1).
     return JSONResponse(
-        status_code=500, content=error_body(INTERNAL_ERROR_CODE, INTERNAL_ERROR_MESSAGE)
+        status_code=500,
+        content=error_body(INTERNAL_ERROR_CODE, INTERNAL_ERROR_MESSAGE),
+        headers=SECURITY_HEADERS,
     )
 
 
