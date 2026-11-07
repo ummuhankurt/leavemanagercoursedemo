@@ -66,6 +66,8 @@
   transaction'da; iki eşzamanlı onay bakiyeyi negatife düşüremez — from bootstrap.
 - Pydantic v1 kalıpları (`orm_mode`, `.dict()`, `class Config`) — `model_config =
   ConfigDict(from_attributes=True)`, `.model_dump()` — from bootstrap.
+- FastAPI/Starlette'in varsayılan `{"detail": ...}` hata gövdesi (404, 405, 422) — `HTTPException`
+  ve `RequestValidationError` için de tek handler'a bağla (`error_body`) — from 0001 review L-1.
 
 ## Enforced by tooling
 <!-- Wire new rules into `scripts/check` whenever possible — prose is advice, tooling is law. -->
