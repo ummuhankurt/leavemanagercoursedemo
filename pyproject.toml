@@ -1,0 +1,92 @@
+[project]
+name = "leave-manager"
+version = "0.1.0"
+description = "Leave Manager — izin yönetimi kurs demosu"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+    "fastapi>=0.162.1",
+    "sqlalchemy>=2.1.8",
+    "uvicorn>=0.54.0",
+]
+
+[build-system]
+requires = ["uv_build>=0.9,<1"]
+build-backend = "uv_build"
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+# E/W/F: pycodestyle + pyflakes · I: import order · N: PEP 8 naming · UP: modern syntax
+# B: bugbear · DTZ: naive datetime / date.today() (docs/conventions.md, Enforced by tooling)
+select = ["E", "W", "F", "I", "N", "UP", "B", "DTZ"]
+
+[tool.ruff.lint.per-file-ignores]
+# The one place allowed to read the wall clock (docs/conventions.md, Data rules).
+"src/leave_manager/core/clock.py" = ["DTZ"]
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+mypy_path = "src"
+packages = ["leave_manager"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "--strict-markers"
+markers = [
+  "integration: HTTP → service → SQLite tests; full profile only (auto-applied to tests/integration/)",
+]
+
+# Layer boundaries F-1…F-4 (docs/architecture.md, Forbidden dependencies).
+[tool.importlinter]
+root_package = "leave_manager"
+include_external_packages = true
+
+[[tool.importlinter.contracts]]
+name = "F-3 layers: api > services > repositories > models"
+type = "layers"
+layers = [
+  "leave_manager.api",
+  "leave_manager.services",
+  "leave_manager.repositories",
+  "leave_manager.models",
+]
+
+[[tool.importlinter.contracts]]
+name = "F-1 api uses services only, never repositories or sqlalchemy directly"
+type = "forbidden"
+source_modules = ["leave_manager.api"]
+forbidden_modules = ["leave_manager.repositories", "sqlalchemy"]
+# F-1 is about direct imports: api → services → repositories is the intended path.
+allow_indirect_imports = true
+
+[[tool.importlinter.contracts]]
+name = "F-2 services are HTTP-free"
+type = "forbidden"
+source_modules = ["leave_manager.services"]
+forbidden_modules = ["fastapi", "starlette"]
+
+[[tool.importlinter.contracts]]
+name = "F-4 models and core import no upper layer"
+type = "forbidden"
+source_modules = ["leave_manager.models", "leave_manager.core"]
+forbidden_modules = [
+  "leave_manager.api",
+  "leave_manager.services",
+  "leave_manager.repositories",
+  "leave_manager.main",
+]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "import-linter>=2.16",
+    "mypy>=2.4.1",
+    "pip-audit>=2.10.1",
+    "pytest>=9.2.0",
+    "ruff>=0.17.4",
+]

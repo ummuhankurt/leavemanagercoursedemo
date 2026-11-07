@@ -1,6 +1,6 @@
 # Spec 0001 — Walking skeleton
 
-- Status: Approved
+- Status: In progress
 - Mode: lite
 - Plan: `specs/plans/0001-plan.md`
 - Self-critique: done
