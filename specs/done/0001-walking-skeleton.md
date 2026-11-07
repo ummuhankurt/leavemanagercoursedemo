@@ -1,6 +1,6 @@
 # Spec 0001 — Walking skeleton
 
-- Status: In progress
+- Status: Shipped
 - Mode: lite
 - Plan: `specs/plans/0001-plan.md`
 - Self-critique: done
@@ -64,36 +64,36 @@ iş kuralı (BR-1…BR-8) — bunlar sonraki spec'lerdir.
 
 ## Acceptance criteria
 
-- [ ] AC-1 — Uygulama ve veritabanı çalışırken durum sorgusu başarılı yanıt döner; yanıt
+- [x] AC-1 — Uygulama ve veritabanı çalışırken durum sorgusu başarılı yanıt döner; yanıt
   "çalışıyor" durumunu, uygulamanın sürümünü (proje tanımındaki sürümle aynı) ve veritabanının
   erişilebilir olduğunu içerir.
-- [ ] AC-2 — Veritabanına erişilemiyorken durum sorgusu "hizmet kullanılamıyor" yanıtı
+- [x] AC-2 — Veritabanına erişilemiyorken durum sorgusu "hizmet kullanılamıyor" yanıtı
   (HTTP 503) döner; gövde standart hata biçimindedir (`code` + `message`) ve yol, SQL veya yığın izi içermez.
-- [ ] AC-3 — Ana sayfa açıldığında, durum yanıtı gelene kadar yükleniyor metni görünür.
-- [ ] AC-4 — Durum başarılıysa ana sayfa "Sistem çalışıyor", sürümü ve "Veritabanı: erişilebilir"
+- [x] AC-3 — Ana sayfa açıldığında, durum yanıtı gelene kadar yükleniyor metni görünür.
+- [x] AC-4 — Durum başarılıysa ana sayfa "Sistem çalışıyor", sürümü ve "Veritabanı: erişilebilir"
   bilgisini gösterir.
-- [ ] AC-5 — Durum sorgusu hata dönerse veya sunucuya ulaşılamazsa ana sayfa "Sistem şu anda
+- [x] AC-5 — Durum sorgusu hata dönerse veya sunucuya ulaşılamazsa ana sayfa "Sistem şu anda
   kullanılamıyor" mesajını gösterir; teknik ayrıntı göstermez.
-- [ ] AC-6 — Durum metni bir canlı bölgede yer alır (ekran okuyucuya duyurulur) ve sayfanın dili
+- [x] AC-6 — Durum metni bir canlı bölgede yer alır (ekran okuyucuya duyurulur) ve sayfanın dili
   `tr` olarak tanımlıdır.
-- [ ] AC-7 — `./scripts/check --fast` biçim, lint, tip, mimari ve birim testi adımlarını;
+- [x] AC-7 — `./scripts/check --fast` biçim, lint, tip, mimari ve birim testi adımlarını;
   `./scripts/check` ek olarak entegrasyon testlerini ve bağımlılık taramasını çalıştırır ve ikisi
   de yeşil döner; her test iki profilden tam olarak birinde çalışır.
-- [ ] AC-8 — Sunum katmanı veri erişim katmanını doğrudan kullanacak şekilde değiştirildiğinde
+- [x] AC-8 — Sunum katmanı veri erişim katmanını doğrudan kullanacak şekilde değiştirildiğinde
   (F-1 ihlali) `./scripts/check --fast` kırmızı döner.
 
 ## Definition of Done
-- [ ] Every acceptance criterion mapped to proof (test or reproducible observation)
-- [ ] `scripts/check` green
-- [ ] Independent review done; real findings fixed, noise rejected with written rationale, deferred ones in `specs/backlog.md`
-- [ ] Docs / ADRs updated if behavior or architecture changed
-- [ ] Spec moved to `specs/done/` (it becomes immutable there)
+- [x] Every acceptance criterion mapped to proof (test or reproducible observation)
+- [x] `scripts/check` green
+- [x] Independent review done; real findings fixed, noise rejected with written rationale, deferred ones in `specs/backlog.md`
+- [x] Docs / ADRs updated if behavior or architecture changed
+- [x] Spec moved to `specs/done/` (it becomes immutable there)
 
 ## Scorecard (fill at ship — honest numbers make the process improvable)
 | Metric | Value |
 |---|---|
-| Spec revisions | |
-| Fix rounds | |
-| Review findings: real / noise / deferred | |
-| Regressions introduced | |
-| Bugs escaped to production | |
+| Spec revisions | 0 (self-critique G-1…G-7 folded before approval) |
+| Fix rounds | 1 (documents only) |
+| Review findings: real / noise / deferred | 1 / 1 / 3 (L-2 / I-2 / L-1→B-1, I-1→B-2, VERIFY F-V1→B-3) |
+| Regressions introduced | 0 |
+| Bugs escaped to production | 0 (not deployed) |

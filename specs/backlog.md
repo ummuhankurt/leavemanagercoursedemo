@@ -18,3 +18,5 @@ step 7). Nothing lands here without that decision; noise is rejected in the tria
   — Recommendation: girdi alan ilk spec'te `StarletteHTTPException` ve `RequestValidationError` için `error_body` ile handler + test — Deferred by: Ümmühan Kurt, 2026-11-07, girdi alan uç yok; bu işte plan kapsamını genişletir
 - **B-2** — `StarletteDeprecationWarning`: TestClient `httpx` yerine `httpx2` istiyor — Source: spec 0001, review round 1 (`pyproject.toml:86`) — Severity: Info
   — Recommendation: `docs/security.md` Dependencies kuralıyla httpx → httpx2 geçişi — Deferred by: Ümmühan Kurt, 2026-11-07, bugün yeşil; bağımlılık değişikliği onaylı bir plan ister
+- **B-3** — AC-4/AC-5 render davranışını otomatik test kanıtlamıyor; `test_index_serves_page_and_script` yalnızca `app.js` kaynak metnini arıyor (VERIFY bozma 4: başarı durumu hata metni gösterirken 7/7 yeşil) — Source: spec 0001, VERIFY (`tests/integration/test_index_page.py`) — Severity: Low
+  — Recommendation: JS mantığı büyüdüğünde `docs/testing.md`'deki gibi `node --test` ile render testi (spec ile) — Deferred by: Ümmühan Kurt, 2026-11-07, bu spec'te durumları ekran görüntüleri kanıtlıyor (G-4, R-6)
