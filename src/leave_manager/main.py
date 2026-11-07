@@ -4,14 +4,18 @@ from __future__ import annotations
 
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 
 from leave_manager.api import health
 from leave_manager.api.errors import register_error_handlers
 from leave_manager.core.config import Settings
 from leave_manager.core.db import Database
 from leave_manager.services.health import app_version
+
+STATIC_DIR = Path(__file__).parent / "static"
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -27,4 +31,6 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.database = database
     register_error_handlers(app)
     app.include_router(health.router)
+    # Mounted last so /api routes always win over static files.
+    app.mount("/", StaticFiles(directory=STATIC_DIR, html=True), name="static")
     return app
