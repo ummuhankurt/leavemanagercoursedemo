@@ -9,6 +9,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from leave_manager.core.config import Settings
+from leave_manager.core.db import migrate
 from leave_manager.main import create_app
 
 INTEGRATION_DIR = Path(__file__).parent / "integration"
@@ -38,9 +39,17 @@ def _client_for(database_url: str) -> Iterator[TestClient]:
 
 
 @pytest.fixture
-def client(tmp_path: Path) -> Iterator[TestClient]:
+def database_url(tmp_path: Path) -> str:
+    """A fresh SQLite file with all migrations applied (docs/testing.md, Integration)."""
+    url = f"sqlite:///{(tmp_path / 'test.db').as_posix()}"
+    migrate(url)
+    return url
+
+
+@pytest.fixture
+def client(database_url: str) -> Iterator[TestClient]:
     """App on a fresh SQLite file of its own — nothing reaches the next test or run."""
-    yield from _client_for(f"sqlite:///{(tmp_path / 'test.db').as_posix()}")
+    yield from _client_for(database_url)
 
 
 @pytest.fixture
