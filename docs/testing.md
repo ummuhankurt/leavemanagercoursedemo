@@ -1,6 +1,7 @@
 # Testing
 
-> **Template — filled during bootstrap.**
+> Bootstrap'ta dolduruldu (2026-11-07). Proje kararları "Frameworks & layout" ve "What must be
+> tested" bölümlerinde; diğer bölümler ANEW'in genel kurallarıdır.
 
 ## The contract
 - Every acceptance criterion maps to at least one test (criterion ↔ test map lives in the plan).
@@ -8,11 +9,39 @@
 - The whole suite runs inside `scripts/check` — one command, everywhere.
 
 ## Frameworks & layout
-<!-- Test framework(s), where tests live, naming pattern. -->
+
+- **pytest**. Testler `tests/unit/` ve `tests/integration/` altında; adlandırma
+  `docs/conventions.md` "Naming".
+- **Unit:** `services/` iş kuralları saf Python olarak; repository'ler basit fake'lerle, DB yok.
+  İş günü hesabı ve durum geçişleri burada.
+- **Integration:** FastAPI `TestClient` ile HTTP → servis → SQLite zinciri. **Her test kendi
+  geçici SQLite veritabanıyla** başlar (`tmp_path`, Alembic migration'ları uygulanmış) — çalıştırmalar
+  arası veri kalıntısı yok (Resource hygiene, kural 5).
+- **Mimari:** `lint-imports` (import-linter) F-1…F-4.
+- **Hızlı/tam ayrımı — seçiciyle:** `tests/integration/` altındaki her test `conftest.py`
+  tarafından otomatik `integration` marker'ı alır. `[fast]`: `pytest -m "not integration"`;
+  yalnızca full: `pytest -m integration`. Yeni bir test her zaman birine düşer (Two speeds, kural 4).
+- **Frontend:** ilk sürümde JS test aracı ve e2e **yok**. Frontend ince tutulur (fetch + göster,
+  iş kuralı yok); davranışı API entegrasyon testleri kanıtlar. JS'te mantık büyürse bir spec ile
+  `node --test` eklenir.
+- **UI ekran görüntüleri:** VERIFY oturumu **Playwright (Python), headless** ile yakalar — repo ve
+  `check` dışında, geçici klasörde.
+- **Determinizm:** testlerde `Clock` sabit bir tarihe ayarlanır; `TZ=UTC`, locale sabit, rastgelelik
+  yok. Ekran görüntülerinde hareket kapalı: uygulamanın test modunda `prefers-reduced-motion` /
+  CSS animasyon ve geçişleri kapalı, Playwright'ta `reduced_motion="reduce"`.
+- **Coverage:** yüzde eşiği yok; kural "her kabul kriteri bir teste bağlanır" (dolgu testini
+  teşvik etmemek için).
 
 ## What must be tested
-<!-- e.g. every business rule (BR-n), every boundary/forbidden dependency; the e2e journeys and
-     budget, if the project has e2e at all (Test layers). -->
+
+- Her iş kuralı **BR-1…BR-8**: en az bir unit test + HTTP davranışı için bir entegrasyon testi.
+- **Hassas alan — Yetkilendirme (BR-6):** her rol × her işlem için entegrasyon testi; yasaklı
+  durumlar (kendi talebini onaylama, başka ekibin talebi, rolsüz kullanıcı) beklenen 403/404'ü
+  döner (`docs/security.md`). VERIFY'da her kriter bir kasıtlı bozmayla kırmızıya döndürülür.
+- Yasaklı bağımlılıklar F-1…F-4 (`lint-imports`).
+- Testler davranışı doğrular — yalnızca durum kodu değil; gövde ve yan etki (örn. bakiye gerçekten
+  düştü mü).
+- e2e: yok (bütçe 0 yolculuk). Bir kritik yolculuk gerektirirse ADR + bütçe ile eklenir.
 
 ## Test layers
 1. **The cheapest test that proves the criterion.** Unit first, then component or integration

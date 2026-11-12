@@ -1,15 +1,15 @@
 # AGENTS.md — Project Rules
 
-> **STATUS: NOT CONFIGURED.** This workspace has not been adapted to a project yet.
-> The only correct first action is the bootstrap workflow (`workflows/bootstrap.md`).
-> Until bootstrap completes and rewrites this file, do not write application code.
+> **Leave Manager (kurs demosu):** çalışan izin talep eder, yönetici onaylar/reddeder, sistem
+> bakiyeyi izler. Python 3.13 + FastAPI + SQLite, düz HTML/CSS/JS; klasik N-katmanlı monolit.
+> Hassas alan: Yetkilendirme (BR-6). Ayrıntılar aşağıdaki dosyalarda — burası yalnızca tabela.
 
 ## Operating mode
 
-**Mode: unset** — bootstrap sets `lite` or `strict` (`workflows/README.md`); every workflow honors its gates.
+**Mode: lite** — bootstrap sets `lite` or `strict` (`workflows/README.md`); every workflow honors its gates.
 **Start work** with `/new-feature` in lite (it chains the segments and asks at each gate) or with
 `/analyze` in strict (one segment per role). Segment commands always stop (`workflows/segments.md`).
-**Language: unset** — bootstrap sets `chat=<xx> · docs=<xx>`; protocol fields stay English (`docs/conventions.md`).
+**Language: chat=tr · docs=tr** — bootstrap sets `chat=<xx> · docs=<xx>`; protocol fields stay English (`docs/conventions.md`).
 
 ## Invariant rules (these survive bootstrap — never delete or weaken them)
 
@@ -26,9 +26,9 @@
 
 | What | Where |
 |---|---|
-| Architecture & boundaries | `docs/architecture.md` |
-| Domain language & business rules | `docs/domain.md` |
-| Coding conventions | `docs/conventions.md` |
+| Architecture & boundaries (katmanlar, F-1…F-5) | `docs/architecture.md` |
+| Domain language & business rules (BR-1…BR-8, hassas alan) | `docs/domain.md` |
+| Coding conventions (sürümler, hata kalıbı, veri kuralları, known traps) | `docs/conventions.md` |
 | Testing rules | `docs/testing.md` |
 | Security rules | `docs/security.md` |
 | Git & branching rules | `docs/git.md` |

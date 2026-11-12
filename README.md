@@ -1,3 +1,16 @@
+## Leave Manager — çalıştırma
+
+İzin yönetimi kurs demosu (Python 3.13 + FastAPI + SQLite). Proje kuralları: `AGENTS.md`.
+
+1. Önkoşul: [uv](https://docs.astral.sh/uv/) — Windows: `winget install --id=astral-sh.uv -e --source winget`
+2. Python ve bağımlılıklar: `uv python install` (sürüm `.python-version`'dan) ve `uv sync`
+3. Uygulamayı başlatın: `uv run uvicorn leave_manager.main:create_app --factory`
+   → tarayıcıda <http://127.0.0.1:8000/>. Veritabanı, ortam değişkeni `LEAVE_MANAGER_DATABASE_URL`
+   ile seçilir (varsayılan `sqlite:///./leave_manager.db`; `.env` dosyası okunmaz — bkz. `.env.example`)
+4. Doğrulama: `./scripts/check --fast` (hızlı) · `./scripts/check` (tam; ağ gerektirir)
+
+---
+
 # ANEW — AI Native Engineering Workspace
 
 **A general-purpose, technology-agnostic bootstrap for building software with AI — under control.**
