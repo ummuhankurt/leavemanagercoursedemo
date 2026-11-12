@@ -5,8 +5,9 @@
 ## Secrets
 - Secrets never enter the repo, specs, prompts, or chat. `.env` is gitignored; provide `.env.example`.
 - Agents never print secret values, even when debugging.
-- Oturum imza anahtarı `.env`'den okunur. Demo kullanıcı şifreleri yalnızca yerel seed betiğinde
-  üretilir, repoya yazılmaz.
+- Oturum imza anahtarı ortam değişkeninden (`LEAVE_MANAGER_SESSION_SECRET`) okunur; `.env` dosyası
+  yüklenmez. Demo kullanıcı şifresi yalnızca yerel seed adımında ortamdan
+  (`LEAVE_MANAGER_DEMO_PASSWORD`) okunur, yazdırılmaz ve repoya yazılmaz.
 
 ## Input & output
 - Tüm girdiler sınırda (`api/`) Pydantic şemalarıyla doğrulanır; bilinmeyen alanlar reddedilir
@@ -22,8 +23,11 @@
 - **AuthN:** e-posta + şifre; şifreler **argon2** (`argon2-cffi`) ile hash'lenir. Oturum
   **HttpOnly + SameSite=Lax + Secure** (üretimde) cookie'de imzalı token; frontend token'ı JS'te
   tutmaz (`localStorage` yok).
-- **CSRF:** durum değiştiren isteklerde (POST/PUT/PATCH/DELETE) double-submit token,
-  `X-CSRF-Token` header'ı.
+- **CSRF:** oturum gerektiren durum değiştiren isteklerde (POST/PUT/PATCH/DELETE) **oturuma
+  bağlı token**, `X-CSRF-Token` header'ı. Token imzalı oturumun içindedir; istemci onu giriş ve
+  `/api/v1/auth/me` yanıtının gövdesinden alır, sunucu header'ı oturumdakiyle sabit zamanlı
+  karşılaştırır (`services/auth.py`). Giriş isteği token istemez: henüz oturum yoktur ve cookie
+  SameSite=Lax'tır (spec 0002, plan R-2).
 - **Default deny:** `/api/v1/auth/login`, sistem durumu sorgusu (`/api/v1/health` — yalnızca
   çalışma durumu, sürüm ve veritabanı erişimi; gizli bilgi yok, spec 0001) ve statik dosyalar
   dışındaki her uç kimlik doğrulama ister.

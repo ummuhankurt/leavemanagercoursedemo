@@ -23,6 +23,13 @@ class ValidationError(DomainError):
     code = "VALIDATION_ERROR"
 
 
+class UnauthorizedError(DomainError):
+    """No valid session (spec 0002)."""
+
+    status_code = 401
+    code = "UNAUTHORIZED"
+
+
 class NotFoundError(DomainError):
     status_code = 404
     code = "NOT_FOUND"
@@ -41,6 +48,10 @@ class ConflictError(DomainError):
 class ServiceUnavailableError(DomainError):
     status_code = 503
     code = "SERVICE_UNAVAILABLE"
+
+
+class ConfigurationError(Exception):
+    """Required setting missing or invalid; the application refuses to start."""
 
 
 class DatabaseUnavailableError(Exception):

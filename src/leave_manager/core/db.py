@@ -4,8 +4,11 @@ from __future__ import annotations
 
 from collections.abc import Iterator
 from contextlib import contextmanager
+from pathlib import Path
 from typing import Any
 
+from alembic import command
+from alembic.config import Config
 from sqlalchemy import create_engine, event
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session, sessionmaker
@@ -35,3 +38,15 @@ class Database:
 
     def dispose(self) -> None:
         self._engine.dispose()
+
+
+MIGRATIONS_DIR = Path(__file__).resolve().parent.parent / "migrations"
+
+
+def migrate(url: str) -> None:
+    """Bring the database at ``url`` to the latest schema (Alembic ``upgrade head``)."""
+    config = Config()
+    config.set_main_option("script_location", str(MIGRATIONS_DIR))
+    # configparser interpolation: a literal % in the URL must be doubled.
+    config.set_main_option("sqlalchemy.url", url.replace("%", "%%"))
+    command.upgrade(config, "head")
