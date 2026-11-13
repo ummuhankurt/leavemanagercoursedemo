@@ -40,4 +40,6 @@
 - Always: one narrow commit, `scripts/check` green. A second file or a new test means re-triage.
 
 ## Pull requests
-- PR template checklist completed; `scripts/check` green in CI; squash-merge.
+- PR template checklist completed; `scripts/check` green in CI; **merge commit** (ADR-0001).
+- A PR may be opened early (draft); it is merged only when the branch holds the ship commit
+  (spec in `specs/done/`, `Status: Shipped`, criteria ticked) and CI is green on it (ADR-0001).
