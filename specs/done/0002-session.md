@@ -1,6 +1,6 @@
 # Spec 0002 — Oturum (giriş / çıkış, sunucu tarafı)
 
-- Status: In progress
+- Status: Shipped
 - Mode: lite
 - Plan: `specs/plans/0002-plan.md`
 - Self-critique: done
@@ -72,44 +72,44 @@ none — no user interface. Giriş ekranı spec 0003'tür; bu işte ana sayfa de
 
 ## Acceptance criteria
 
-- [ ] AC-1 — Doğru e-posta ve şifreyle oturum açılır; ardından oturum sorgusu kullanıcının adını,
+- [x] AC-1 — Doğru e-posta ve şifreyle oturum açılır; ardından oturum sorgusu kullanıcının adını,
   e-postasını ve rolünü döner; yanıtta şifre veya hash yoktur. Oturumu olan biri tekrar giriş
   yaparsa yeni kullanıcının bilgileri döner.
-- [ ] AC-2 — E-posta farklı büyük/küçük harfle ve baş/son boşluklu girildiğinde oturum yine açılır.
-- [ ] AC-3 — Yanlış şifre ve kayıtlı olmayan e-posta aynı HTTP durumunu (401) ve aynı standart hata
+- [x] AC-2 — E-posta farklı büyük/küçük harfle ve baş/son boşluklu girildiğinde oturum yine açılır.
+- [x] AC-3 — Yanlış şifre ve kayıtlı olmayan e-posta aynı HTTP durumunu (401) ve aynı standart hata
   gövdesini döner.
-- [ ] AC-4 — Oturum yokken, oturum değiştirilmişken veya başlangıcından tam 8 saat (ve sonrası)
+- [x] AC-4 — Oturum yokken, oturum değiştirilmişken veya başlangıcından tam 8 saat (ve sonrası)
   geçmişken oturum sorgusu 401 ve standart hata gövdesi döner; 8 saatten bir saniye önce oturum
   hâlâ geçerlidir.
-- [ ] AC-5 — Oturum kapatıldıktan sonra oturum sorgusu 401 döner. CSRF token'ı olmadan veya yanlış
+- [x] AC-5 — Oturum kapatıldıktan sonra oturum sorgusu 401 döner. CSRF token'ı olmadan veya yanlış
   token'la yapılan kapatma isteği 403 ile reddedilir ve oturum sürer. Oturum açma isteği CSRF
   token'ı olmadan kabul edilir.
-- [ ] AC-6 — Oturum cookie'si HttpOnly ve SameSite=Lax'tır; üretim ayarında Secure'dur.
-- [ ] AC-7 — Kullanıcının şifresi veritabanında yalnızca argon2 hash'i olarak bulunur. Seed her
+- [x] AC-6 — Oturum cookie'si HttpOnly ve SameSite=Lax'tır; üretim ayarında Secure'dur.
+- [x] AC-7 — Kullanıcının şifresi veritabanında yalnızca argon2 hash'i olarak bulunur. Seed her
   rolden en az bir kullanıcı oluşturur ve tekrar çalıştırıldığında kullanıcıları çoğaltmaz; demo
   şifresi tanımlı değilse hiç kullanıcı oluşturmadan hatayla durur.
-- [ ] AC-8 — Eksik/boş alanlı veya bilinmeyen alan içeren oturum açma isteği 422 döner; bilinmeyen
+- [x] AC-8 — Eksik/boş alanlı veya bilinmeyen alan içeren oturum açma isteği 422 döner; bilinmeyen
   bir yol 404, desteklenmeyen yöntem 405 döner; üçü de standart `{"error": {code, message}}`
   biçimindedir ve iç ayrıntı içermez.
-- [ ] AC-9 — Durum sorgusu ve ana sayfa oturumsuz erişilebilir; spec 0001'in AC-1…AC-6
+- [x] AC-9 — Durum sorgusu ve ana sayfa oturumsuz erişilebilir; spec 0001'in AC-1…AC-6
   davranışı değişmez.
-- [ ] AC-10 — İmza anahtarı ortamda tanımlı değilken uygulama başlamaz ve hatası anahtarın eksik
+- [x] AC-10 — İmza anahtarı ortamda tanımlı değilken uygulama başlamaz ve hatası anahtarın eksik
   olduğunu söyler (anahtar değerini içermez).
-- [ ] AC-11 — Yanıtlar `Content-Security-Policy: default-src 'self'`,
+- [x] AC-11 — Yanıtlar `Content-Security-Policy: default-src 'self'`,
   `X-Content-Type-Options: nosniff` ve `Referrer-Policy` header'larını taşır.
 
 ## Definition of Done
-- [ ] Every acceptance criterion mapped to proof (test or reproducible observation)
-- [ ] `scripts/check` green
-- [ ] Independent review done; real findings fixed, noise rejected with written rationale, deferred ones in `specs/backlog.md`
-- [ ] Docs / ADRs updated if behavior or architecture changed
-- [ ] Spec moved to `specs/done/` (it becomes immutable there)
+- [x] Every acceptance criterion mapped to proof (test or reproducible observation)
+- [x] `scripts/check` green
+- [x] Independent review done; real findings fixed, noise rejected with written rationale, deferred ones in `specs/backlog.md`
+- [x] Docs / ADRs updated if behavior or architecture changed
+- [x] Spec moved to `specs/done/` (it becomes immutable there)
 
 ## Scorecard (fill at ship — honest numbers make the process improvable)
 | Metric | Value |
 |---|---|
-| Spec revisions | |
-| Fix rounds | |
-| Review findings: real / noise / deferred | |
-| Regressions introduced | |
-| Bugs escaped to production | |
+| Spec revisions | 0 (yalnızca Status değişti; self-critique G-1…G-8 onaydan önce işlendi) |
+| Fix rounds | 1 (M-1 kod + test, I-2 doküman) |
+| Review findings: real / noise / deferred | 2 / 0 / 1 (M-1, I-2 / — / I-1→B-4); VERIFY: gap yok, 3 Info notu |
+| Regressions introduced | 0 |
+| Bugs escaped to production | 0 (not deployed) |
